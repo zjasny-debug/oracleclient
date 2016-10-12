@@ -13,52 +13,14 @@ import java.net.URISyntaxException;
  *
  */
 public class OraclePaddingClient {
+    static final String ENCRYPTED_MESSAGE = "5ca00ff4c878d61e1edbf1700618fb287c21578c0580965dad57f70636ea402fa0017c4acc82717730565174e2e3f713d3921bab07cba15f3197b87976525ce4";
+    static final String TARGET_IP = "localhost";
+    static final Integer TARGET_PORT = 8080;
+    static final String TARGET_PATH = "/cbc/po";
+
     static final Boolean RESPONSEIFERROR = false;
 
     CloseableHttpClient hgOraclePadClient = HttpClients.createDefault();
-    String SERVER_URL = "http://localhost:8080/";
-    String TARGETIP = "localhost";
-    Integer TARGETPORT = 8080;
-
-    /**
-     * Sends query to Http server
-     *
-     * @param q String passed as argument to uri
-     * @return Server Response Status Code
-     */
-    public boolean query(String q) throws IOException, URISyntaxException {
-        URI uri = null;
-        uri = new URIBuilder()
-                .setScheme("http")
-                .setHost(TARGETIP)
-                .setPort(TARGETPORT)
-                .setPath("/cbc/po")
-                .setParameter("path", q)
-                .build();
-
-        HttpGet httpget = new HttpGet(uri);
-        CloseableHttpResponse response = hgOraclePadClient.execute(httpget);
-
-        int statuscode = response.getStatusLine().getStatusCode();
-        response.close();
-
-        boolean isPaddingGood;
-        switch (statuscode) {
-            case 200: // legitimate message
-                isPaddingGood = true;
-                break;
-            case 404: // good padding, bad request
-                isPaddingGood = true;
-                break;
-            case 403: // wrong padding
-                isPaddingGood = RESPONSEIFERROR;
-                break;
-            default: // server issue
-                isPaddingGood = true;
-        }
-        return isPaddingGood;
-    }
-
 
     /**
      * Turns array of bytes into string hex representation
@@ -98,17 +60,54 @@ public class OraclePaddingClient {
         return buf;
     }
 
-
     public static void main(String[] args) {
         OraclePaddingClient opc = new OraclePaddingClient();
 
-        String encryptedmessage = "28a226d160dad07883d04e008a7897ee2e4b7465d5290d0c0e6c6822236e1daafb94ffe0c5da05d9476be028ad7c1d81";
         try {
-            System.out.println("Server responded : " + opc.query(encryptedmessage));
+            System.out.println("Server responded : " + opc.query(ENCRYPTED_MESSAGE));
         } catch (Exception e) {
             System.out.print("Exception from server");
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Sends query to Http server
+     *
+     * @param q String passed as argument to uri
+     * @return Server Response Status Code
+     */
+    public boolean query(String q) throws IOException, URISyntaxException {
+        URI uri = null;
+        uri = new URIBuilder()
+                .setScheme("http")
+                .setHost(TARGET_IP)
+                .setPort(TARGET_PORT)
+                .setPath(TARGET_PATH)
+                .setParameter("path", q)
+                .build();
+
+        HttpGet httpget = new HttpGet(uri);
+        CloseableHttpResponse response = hgOraclePadClient.execute(httpget);
+
+        int statuscode = response.getStatusLine().getStatusCode();
+        response.close();
+
+        boolean isPaddingGood;
+        switch (statuscode) {
+            case 200: // legitimate message
+                isPaddingGood = true;
+                break;
+            case 404: // good padding, bad request
+                isPaddingGood = true;
+                break;
+            case 403: // wrong padding
+                isPaddingGood = RESPONSEIFERROR;
+                break;
+            default: // server issue
+                isPaddingGood = true;
+        }
+        return isPaddingGood;
     }
 }
 
