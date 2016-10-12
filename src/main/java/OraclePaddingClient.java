@@ -10,8 +10,11 @@ import java.net.URISyntaxException;
 
 /**
  * Created by dame on 05/10/2016.
+ *
  */
 public class OraclePaddingClient {
+    static final Boolean RESPONSEIFERROR = false;
+
     CloseableHttpClient hgOraclePadClient = HttpClients.createDefault();
     String SERVER_URL = "http://localhost:8080/";
     String TARGETIP = "localhost";
@@ -24,7 +27,6 @@ public class OraclePaddingClient {
      * @return Server Response Status Code
      */
     public boolean query(String q) throws IOException, URISyntaxException {
-        Boolean RESPONSEIFERROR = false;
         URI uri = null;
         uri = new URIBuilder()
                 .setScheme("http")
@@ -34,12 +36,12 @@ public class OraclePaddingClient {
                 .setParameter("path", q)
                 .build();
 
-
         HttpGet httpget = new HttpGet(uri);
         CloseableHttpResponse response = hgOraclePadClient.execute(httpget);
 
         int statuscode = response.getStatusLine().getStatusCode();
         response.close();
+
         boolean isPaddingGood;
         switch (statuscode) {
             case 200: // legitimate message
@@ -54,7 +56,6 @@ public class OraclePaddingClient {
             default: // server issue
                 isPaddingGood = true;
         }
-
         return isPaddingGood;
     }
 
@@ -101,9 +102,9 @@ public class OraclePaddingClient {
     public static void main(String[] args) {
         OraclePaddingClient opc = new OraclePaddingClient();
 
-        String ENCMSG = "28a226d160dad07883d04e008a7897ee2e4b7465d5290d0c0e6c6822236e1daafb94ffe0c5da05d9476be028ad7c1d81";
+        String encryptedmessage = "28a226d160dad07883d04e008a7897ee2e4b7465d5290d0c0e6c6822236e1daafb94ffe0c5da05d9476be028ad7c1d81";
         try {
-            System.out.println("Server responded : " + opc.query(ENCMSG));
+            System.out.println("Server responded : " + opc.query(encryptedmessage));
         } catch (Exception e) {
             System.out.print("Exception from server");
             e.printStackTrace();
