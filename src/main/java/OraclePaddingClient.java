@@ -78,8 +78,7 @@ public class OraclePaddingClient {
      * @return Server Response Status Code
      */
     public boolean query(String q) throws IOException, URISyntaxException {
-        URI uri = null;
-        uri = new URIBuilder()
+        URI uri = new URIBuilder()
                 .setScheme("http")
                 .setHost(TARGET_IP)
                 .setPort(TARGET_PORT)
