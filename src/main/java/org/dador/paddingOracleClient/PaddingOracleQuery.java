@@ -21,8 +21,6 @@ public class PaddingOracleQuery {
     protected static final String TARGET_PARAMETER_NAME = "path";
 
 
-    protected static final Boolean RESPONSEIFERROR = false;
-
     private CloseableHttpClient hgOraclePadClient = HttpClients.createDefault();
 
     /**
@@ -55,7 +53,7 @@ public class PaddingOracleQuery {
                 isPaddingGood = true;
                 break;
             case 403: // wrong padding
-                isPaddingGood = RESPONSEIFERROR;
+                isPaddingGood = false;
                 break;
             default: // server issue
                 isPaddingGood = true;

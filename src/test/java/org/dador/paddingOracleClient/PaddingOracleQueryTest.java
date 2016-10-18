@@ -24,7 +24,15 @@ public class PaddingOracleQueryTest {
     public void should_return_false_for_invalid_query() throws Exception {
         PaddingOracleQuery opc = new PaddingOracleQuery();
         boolean response = opc.query("AAAAAAAA");
-        Boolean expected = true;
+        Boolean expected = false;
+        Assert.assertEquals(expected, response);
+    }
+
+    @Test
+    public void should_return_false_for_empty_query() throws Exception {
+        PaddingOracleQuery opc = new PaddingOracleQuery();
+        boolean response = opc.query("");
+        Boolean expected = false;
         Assert.assertEquals(expected, response);
     }
 }
