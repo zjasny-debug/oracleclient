@@ -15,7 +15,7 @@ public class OraclePaddingClient {
         try {
             System.out.println("Server responded : " + opc.query(ENCRYPTED_MESSAGE));
         } catch (Exception e) {
-            System.out.print("Exception from server");
+            System.out.print("Exception caught. Server down ?");
             e.printStackTrace();
         }
     }
