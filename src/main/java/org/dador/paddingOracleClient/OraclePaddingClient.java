@@ -13,13 +13,13 @@ public class OraclePaddingClient {
      * Fonction that create a block of 0 value, except for padding.
      *
      * @param n : number of bytes of padding
-     * @return
+     * @return byte[BLOCK_SIZE] filled with 0 and padding values
      */
     protected static byte[] getPaddingArray(int n) {
         byte[] result = new byte[BLOCK_SIZE];
 
-        /**
-         * TODO : YOUR CODE HERE
+        /*
+          TODO : YOUR CODE HERE
          */
         return result;
     }
@@ -28,8 +28,8 @@ public class OraclePaddingClient {
         byte[] result = new byte[BLOCK_SIZE];
         int decodedLenght = decoded.length;
 
-        /**
-         * TODO : YOUR CODE HERE
+        /*
+          TODO : YOUR CODE HERE
          */
         return result;
     }
@@ -38,13 +38,13 @@ public class OraclePaddingClient {
      * Fonction that splits a message into constituent blocs
      *
      * @param message
-     * @return
+     * @return an array of blocs
      */
     protected static byte[][] splitMessageIntoBlocks(byte[] message) {
         byte[][] result = new byte[1][BLOCK_SIZE];
 
-        /**
-         * TODO: YOUR CODE HERE
+        /*
+          TODO: YOUR CODE HERE
          */
         return result;
     }

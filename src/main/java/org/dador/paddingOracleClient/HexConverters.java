@@ -1,6 +1,7 @@
 package org.dador.paddingOracleClient;
 
 /**
+ * Collection of tools to manipulate String represented as Hex characters
  * Created by dame on 18/10/2016.
  */
 public class HexConverters {
@@ -46,8 +47,8 @@ public class HexConverters {
     /**
      * Applies xor element by element. buf1 and buf2 must be same length !
      *
-     * @param buf1
-     * @param buf2
+     * @param buf1 : first element for xor
+     * @param buf2 : second element for xor
      * @return byte array containing xored values of buf1 and buf2
      */
     public static byte[] xorArray(byte[] buf1, byte[] buf2) throws IllegalArgumentException {

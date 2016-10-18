@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
+ * Test for connexion to Padding Oracle
  * Created by dame on 18/10/2016.
  */
 public class PaddingOracleQueryTest {
@@ -22,7 +23,7 @@ public class PaddingOracleQueryTest {
     @Test
     public void should_return_false_for_invalid_query() throws Exception {
         PaddingOracleQuery opc = new PaddingOracleQuery();
-        boolean response = opc.query(new String("AAAAAAAA"));
+        boolean response = opc.query("AAAAAAAA");
         Boolean expected = true;
         Assert.assertEquals(expected, response);
     }
