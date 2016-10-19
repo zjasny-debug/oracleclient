@@ -7,6 +7,7 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 /**
+ * Hex string manipulation helpers.
  * Created by dame on 18/10/2016.
  */
 public class HexConvertersTest {
