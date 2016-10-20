@@ -11,6 +11,17 @@ import static org.junit.Assert.assertEquals;
  * Created by dame on 18/10/2016.
  */
 public class HexConvertersTest {
+    @Test
+    public void should_get_printable_AAAdotA_for_414141_13_41() throws Exception {
+        byte[] input = new byte[5];
+        input[0] = 65;
+        input[1] = 65;
+        input[2] = 65;
+        input[3] = 13;
+        input[4] = 65;
+        String expected = "AAA.A";
+        assertEquals(expected, getPrintableByteArray(input));
+    }
 
 
     @Test
@@ -45,12 +56,11 @@ public class HexConvertersTest {
 
     }
 
-
     @Test(expected = IllegalArgumentException.class)
     public void xorArray_should_throw_exception() throws Exception {
         byte[] input1 = getByteArrayFromStringHexRepresentation("0101");
         byte[] input2 = getByteArrayFromStringHexRepresentation("12");
-        byte[] result = xorArray(input1, input2);
+        xorArray(input1, input2);
 
     }
 }

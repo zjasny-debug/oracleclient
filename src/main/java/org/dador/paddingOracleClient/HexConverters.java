@@ -1,5 +1,7 @@
 package org.dador.paddingOracleClient;
 
+import java.nio.charset.StandardCharsets;
+
 /**
  * Collection of tools to manipulate String represented as Hex characters
  * Created by dame on 18/10/2016.
@@ -60,6 +62,22 @@ public class HexConverters {
         return result;
 
 
+    }
+
+    public static String getPrintableByteArray(byte[] buf) {
+        byte[] copyBuf = removeUnprintableChars(buf);
+        String result = new String(copyBuf, StandardCharsets.UTF_8);
+        return result;
+    }
+
+    private static byte[] removeUnprintableChars(byte[] buf) {
+        byte[] copyBuf = buf.clone();
+        for (int i = 0; i < copyBuf.length; i++) {
+            if (copyBuf[i] >= 0 && copyBuf[i] < 32) {
+                copyBuf[i] = 46; // "." character
+            }
+        }
+        return copyBuf;
     }
 
 }
