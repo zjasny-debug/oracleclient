@@ -64,6 +64,11 @@ public class HexConverters {
 
     }
 
+    /**
+     * Transforms a byte array into a printable string (non print char are replaced by ".")
+     * @param buf a byte array to transform
+     * @return UTF-8 encoded string
+     */
     public static String getPrintableByteArray(byte[] buf) {
         byte[] copyBuf = removeUnprintableChars(buf);
         String result = new String(copyBuf, StandardCharsets.UTF_8);

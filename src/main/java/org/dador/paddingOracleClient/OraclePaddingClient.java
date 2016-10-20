@@ -12,8 +12,8 @@ public class OraclePaddingClient {
     static final int BLOCK_SIZE = 16;
 
     /**
-     * Fonction that create a block of 0 value, except for padding.
-     *
+     * Fonction takes a number and creates a block of x00 values, padded according to PKCS#7
+     * example : n=3 result is 00 00 .. 00 03 03 03
      * @param n : number of bytes of padding
      * @return byte[BLOCK_SIZE] filled with 0 and padding values
      */
@@ -27,8 +27,8 @@ public class OraclePaddingClient {
     }
 
     /**
-     * Function that create a modified cyphertext bloc for trying a guess
-     *
+     * Function that create a modified ciphertext bloc for trying a guess
+     * Note that the "ciphertext" correspond to the IV part for the Block Cipher
      * @param ciphertext : original ciphertext bloc
      * @param decoded    : decrypted part of the plain text (for next bloc)
      * @param position   : position of the byte to guess
@@ -46,12 +46,13 @@ public class OraclePaddingClient {
     }
 
     /**
-     * Fonction that splits a message into constituent blocs
+     * Fonction that splits a message into constituent blocs of BLOCK_SIZE
      *
      * @param message
      * @return an array of blocs
+     * @throws IllegalArgumentException
      */
-    protected byte[][] splitMessageIntoBlocks(byte[] message) {
+    protected byte[][] splitMessageIntoBlocks(byte[] message) throws IllegalArgumentException {
         if (message.length % BLOCK_SIZE != 0) {
             throw new IllegalArgumentException("Message length is not a multiple of bloc size");
         }
@@ -61,7 +62,17 @@ public class OraclePaddingClient {
         return new byte[1][1];
     }
 
-    public int getPaddingLengthForLastBlock(PaddingOracleQuery poq, byte[] previousbloc, byte[] lastbloc) throws IOException, URISyntaxException, IllegalAccessException {
+    /**
+     * Function that takes the 2 last blocks of the message
+     * and returns the length of the padding.
+     * @param poq : a PaddingOracleQuery object
+     * @param previousbloc : next to last block of the ciphertext
+     * @param lastbloc : last bloc of the ciphertext
+     * @return an integer corresponding to padding length
+     * @throws IOException
+     * @throws URISyntaxException
+     */
+    public int getPaddingLengthForLastBlock(PaddingOracleQuery poq, byte[] previousbloc, byte[] lastbloc) throws IOException, URISyntaxException {
         /**
          * TODO : Your Code HERE
          */
@@ -69,6 +80,18 @@ public class OraclePaddingClient {
         return 0;
     }
 
+    /**
+     * Main function that takes 2 consecutive blocks of the ciphertext
+     * and returns the decryption of the 2nd message block
+     *
+     * @param poq : a PaddingOracleQuery object to query server
+     * @param iv : the "iv" part of the 2 blocks query
+     * @param ciphertext : the block that will be decrypted
+     * @param padding : set to 0 if not the last block. Set to paddinglength if last block
+     * @return a decrypted byte array
+     * @throws IOException
+     * @throws URISyntaxException
+     */
     public byte[] runDecryptionForBlock(PaddingOracleQuery poq, byte[] iv, byte[] ciphertext, int padding) throws IOException, URISyntaxException {
         byte[] decoded = new byte[BLOCK_SIZE];
         if (padding > 0) {
