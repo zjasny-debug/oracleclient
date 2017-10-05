@@ -2,7 +2,7 @@ package org.dador.paddingOracleClient;
 
 import org.junit.Test;
 
-import static org.dador.paddingOracleClient.HexConverters.getByteArrayFromStringHexRepresentation;
+import static org.dador.paddingOracleClient.HexConverters.toByteArrayFromHex;
 import static org.dador.paddingOracleClient.OraclePaddingClient.BLOCK_SIZE;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -15,11 +15,11 @@ public class OraclePaddingClientTest {
     @Test
     public void should_buildGuessForPosition_return_() throws Exception {
         OraclePaddingClient opc = new OraclePaddingClient();
-        byte[] cypher = getByteArrayFromStringHexRepresentation("02020202020202020202020202020202");
-        byte[] decoded = getByteArrayFromStringHexRepresentation("00000000000000000000000000656565");
+        byte[] cypher = toByteArrayFromHex("02020202020202020202020202020202");
+        byte[] decoded = toByteArrayFromHex("00000000000000000000000000656565");
         byte guess = 1;
         int position = 12; // padding shoud be                   "00000000000000000000000004040404"
-        byte[] expected = getByteArrayFromStringHexRepresentation("02020202020202020202020207636363");
+        byte[] expected = toByteArrayFromHex("02020202020202020202020207636363");
         assertArrayEquals(expected, opc.buildGuessForPosition(cypher, decoded, position, guess));
 
     }
@@ -32,7 +32,7 @@ public class OraclePaddingClientTest {
         byte[] decoded = new byte[BLOCK_SIZE];
         byte guess = 2;
         int position = 15; // padding shoud be                   "00000000000000000000000004040404"
-        byte[] expected = getByteArrayFromStringHexRepresentation("00000000000000000000000000000003");
+        byte[] expected = toByteArrayFromHex("00000000000000000000000000000003");
         assertArrayEquals(expected, opc.buildGuessForPosition(cypher, decoded, position, guess));
 
     }
@@ -53,7 +53,7 @@ public class OraclePaddingClientTest {
     public void should_getPaddingArray_return_full_block_for_padding_32() throws Exception {
         OraclePaddingClient opc = new OraclePaddingClient();
 
-        byte[] expected = HexConverters.getByteArrayFromStringHexRepresentation("10101010101010101010101010101010");
+        byte[] expected = HexConverters.toByteArrayFromHex("10101010101010101010101010101010");
         byte[] result = opc.getPaddingArray(16);
         assertArrayEquals(expected, result);
     }
@@ -63,10 +63,10 @@ public class OraclePaddingClientTest {
         OraclePaddingClient opc = new OraclePaddingClient();
 
         String message = "0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF";
-        byte[] hexMessage = getByteArrayFromStringHexRepresentation(message);
+        byte[] hexMessage = toByteArrayFromHex(message);
         byte[][] result = opc.splitMessageIntoBlocks(hexMessage);
         assertEquals(2, result.length);
-        assertArrayEquals(getByteArrayFromStringHexRepresentation("0123456789ABCDEF0123456789ABCDEF"), result[0]);
+        assertArrayEquals(toByteArrayFromHex("0123456789ABCDEF0123456789ABCDEF"), result[0]);
     }
 
 }

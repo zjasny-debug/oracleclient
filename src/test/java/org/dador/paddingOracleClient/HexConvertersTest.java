@@ -20,7 +20,7 @@ public class HexConvertersTest {
         input[3] = 13;
         input[4] = 65;
         String expected = "AAA.A";
-        assertEquals(expected, getPrintableByteArray(input));
+        assertEquals(expected, toPrintableString(input));
     }
 
 
@@ -30,7 +30,7 @@ public class HexConvertersTest {
         byte[] expected = new byte[2];
         expected[0] = 1;
         expected[1] = 10;
-        byte[] result = getByteArrayFromStringHexRepresentation(inputString);
+        byte[] result = toByteArrayFromHex(inputString);
         assertArrayEquals(expected, result);
     }
 
@@ -41,16 +41,16 @@ public class HexConvertersTest {
         inputArray[1] = 10;
         String expected = "010a";
 
-        String result = getStringHexRepresentationFromByteArray(inputArray);
+        String result = toHexFromByteArray(inputArray);
         assertEquals(expected, result);
 
     }
 
     @Test
     public void xorArray_should_return_array_of_0() throws Exception {
-        byte[] input1 = getByteArrayFromStringHexRepresentation("0101");
-        byte[] input2 = getByteArrayFromStringHexRepresentation("1212");
-        byte[] expected = getByteArrayFromStringHexRepresentation("1313");
+        byte[] input1 = toByteArrayFromHex("0101");
+        byte[] input2 = toByteArrayFromHex("1212");
+        byte[] expected = toByteArrayFromHex("1313");
         byte[] result = xorArray(input1, input2);
         assertArrayEquals(expected, result);
 
@@ -58,8 +58,8 @@ public class HexConvertersTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void xorArray_should_throw_exception() throws Exception {
-        byte[] input1 = getByteArrayFromStringHexRepresentation("0101");
-        byte[] input2 = getByteArrayFromStringHexRepresentation("12");
+        byte[] input1 = toByteArrayFromHex("0101");
+        byte[] input2 = toByteArrayFromHex("12");
         xorArray(input1, input2);
 
     }

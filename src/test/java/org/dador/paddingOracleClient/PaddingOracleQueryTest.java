@@ -3,7 +3,7 @@ package org.dador.paddingOracleClient;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.dador.paddingOracleClient.HexConverters.getByteArrayFromStringHexRepresentation;
+import static org.dador.paddingOracleClient.HexConverters.toByteArrayFromHex;
 
 /**
  * Test for connexion to Padding Oracle
@@ -41,7 +41,7 @@ public class PaddingOracleQueryTest {
         PaddingOracleQuery poq = new PaddingOracleQuery();
 
         String message = ENCRYPTED_MESSAGE;
-        byte[] hexMessage = getByteArrayFromStringHexRepresentation(message);
+        byte[] hexMessage = toByteArrayFromHex(message);
         byte[][] splitMSG = opc.splitMessageIntoBlocks(hexMessage);
         int result = opc.getPaddingLengthForLastBlock(poq, splitMSG[2], splitMSG[3]);
         Assert.assertEquals(6, result);
@@ -53,7 +53,7 @@ public class PaddingOracleQueryTest {
         PaddingOracleQuery poq = new PaddingOracleQuery();
 
         String message = ENCRYPTED_MESSAGE;
-        byte[] hexMessage = getByteArrayFromStringHexRepresentation(message);
+        byte[] hexMessage = toByteArrayFromHex(message);
         byte[][] splitMSG = opc.splitMessageIntoBlocks(hexMessage);
         int result = opc.getPaddingLengthForLastBlock(poq, splitMSG[1], splitMSG[2]);
         Assert.assertEquals(6, result);
