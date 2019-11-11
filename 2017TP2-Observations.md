@@ -1,13 +1,18 @@
+# Bons résultats :
+padding 6
+lastpost 32 ou 73 ou 
 
-#3
-* OTMANI Youba
- * NAIT ABDESSELAM Ali
- 
- Calcule l'offset en dernière position (sans padding)
- Découpage en blocs ne marche pas
- getPaddingLengthForLastBlock pas compris !
- Push de /bin comprenant les javadoc
- 
+ #8
+  * AHMED ALI 
+  * COULIBALY ISMAEL
+
+  Split ok
+  Détection du padding (réponse 6)
+  Calcule le guess en dernière position (sans padding)
+  Pas déplacé dans la fonction 'mis en commentaire'
+  Commit uniquement des fichiers modifiés
+
+
  #4
  * Mouhamadou DIALLO
  * Khadidiatou NDIOUR
@@ -18,16 +23,7 @@
  Le main affiche le padding 
  (le guess de dernière position fait mais commenté)  
  Push uniquement du nécessaire
- 
- #6
- * Dhafer BRAHIM 
- * Souhaib ALOUI
- 
-Calcule le guess en dernière position (sans padding)
-Split ok
- getPaddingLengthForLastBlock pas compris !
- Push du /bin
- Code ok (nommage)
+  
  
  #7
   * ZAKARIA MZIRDA
@@ -39,16 +35,32 @@ Split ok
  déplacé le code de main dans rundecryptionforblock
  C'est BIEN
  Commit uniquement du bon fichier
- 
- #8
-  * AHMED ALI 
-  * COULIBALY ISMAEL
 
-  Split ok
-  Détectiondu padding (réponse 6)
-  Calcule le guess en dernière position (sans padding)
-  Pas déplacé dans la fonction 'mis en commentaire'
-  Commit uniquement des fichiers modifiés
+
+
+ #6
+ * Dhafer BRAHIM 
+ * Souhaib ALOUI
+ 
+Calcule le guess en dernière position (sans padding)
+Split ok
+ getPaddingLengthForLastBlock pas compris !
+ Push du /bin
+ Code ok (nommage)
+
+ 
+
+#10
+ * Haguibou TALL 11112255 & 
+ * Abdoulaye DIALLO 11214263
+
+split ok
+guess for last position marche, mais c'est du bol
+lastpos : 33
+dans le main
+commit uniquement des .java
+  
+
  
  #9
   * CAMARA MOUHAMED
@@ -70,17 +82,15 @@ Split ok
   getpadding pas compris
   déplacé le code dans rundecryptforblock
   commit de tout le projet (yc binaires)
-  
-#10
- * Haguibou TALL 11112255 & 
- * Abdoulaye DIALLO 11214263
 
-split ok
-
-guess for last position marche, mais c'est du bol
-lastpos : 33
-dans le main
-commit uniquement des .java
+#3
+* OTMANI Youba
+ * NAIT ABDESSELAM Ali
+ 
+ Calcule l'offset en dernière position (sans padding)
+ Découpage en blocs ne marche pas
+ getPaddingLengthForLastBlock pas compris !
+ Push de /bin comprenant les javadoc
   
 #12
  * SALAMI GIBRILA Taa-Biou */
