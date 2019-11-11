@@ -45,7 +45,7 @@ public class OraclePaddingClientTest {
         byte[] expected = new byte[BLOCK_SIZE];
         expected[expected.length - 1] = (byte) 2;
         expected[expected.length - 2] = (byte) 2;
-        byte[] result = opc.getPaddingArray(2);
+        byte[] result = opc.buildPaddingArray(2);
         assertArrayEquals(expected, result);
     }
 
@@ -54,7 +54,7 @@ public class OraclePaddingClientTest {
         OraclePaddingClient opc = new OraclePaddingClient();
 
         byte[] expected = HexConverters.toByteArrayFromHex("10101010101010101010101010101010");
-        byte[] result = opc.getPaddingArray(16);
+        byte[] result = opc.buildPaddingArray(16);
         assertArrayEquals(expected, result);
     }
 

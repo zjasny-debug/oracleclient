@@ -4,6 +4,9 @@ package org.dador.paddingOracleClient;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import static org.dador.paddingOracleClient.HexConverters.*;
+import static org.dador.paddingOracleClient.HexConverters.toHexFromByteArray;
+
 /**
  * Main Class for Padding OracleClient
  */
@@ -17,7 +20,7 @@ public class OraclePaddingClient {
      * @param n : number of bytes of padding
      * @return byte[BLOCK_SIZE] filled with 0 and padding values
      */
-    protected byte[] getPaddingArray(int n) {
+    protected byte[] buildPaddingArray(int n) {
         byte[] result = new byte[BLOCK_SIZE];
 
         /**
@@ -56,10 +59,17 @@ public class OraclePaddingClient {
         if (message.length % BLOCK_SIZE != 0) {
             throw new IllegalArgumentException("Message length is not a multiple of bloc size");
         }
-        /**
-         * TODO : YOUR CODE HERE
-         */
-        return new byte[1][1];
+
+        int blocNumber = message.length / BLOCK_SIZE;
+
+        byte[][] result = new byte[blocNumber][BLOCK_SIZE];
+
+        for (int i = 0; i < blocNumber; i++) {
+            for (int j = 0; j < BLOCK_SIZE; j++) {
+                result[i][j] = message[i * BLOCK_SIZE + j];
+            }
+        }
+        return result;
     }
 
     /**
@@ -95,11 +105,24 @@ public class OraclePaddingClient {
     public byte[] runDecryptionForBlock(PaddingOracleQuery poq, byte[] iv, byte[] ciphertext, int padding) throws IOException, URISyntaxException {
         byte[] decoded = new byte[BLOCK_SIZE];
         if (padding > 0) {
-            decoded = getPaddingArray(padding);
+            decoded = buildPaddingArray(padding);
         }
-        /**
-         * TODO : YOUR CODE HERE
-         */
+        String query; // requête représenté en chaine hexadécimale
+        byte[] bquery; // requete sous forme byte array
+        String hexBloc = toHexFromByteArray(ciphertext);
+
+        for (int pos = BLOCK_SIZE - padding; pos > 0; pos--) {
+            for (int guess = 0; guess < 256; guess++) {
+                bquery = buildGuessForPosition(iv, decoded, pos - 1, (byte) guess);
+                query = toHexFromByteArray(bquery) + hexBloc;
+                if (poq.query(query)) {
+                    decoded[pos - 1] = (byte) guess;
+                    System.out.println(toPrintableString(decoded));
+                    break;
+                }
+            }
+
+        }
         return decoded;
     }
 
@@ -113,11 +136,39 @@ public class OraclePaddingClient {
             e.printStackTrace();
         }
         try {
-            /**
-             * TODO : YOUR CODE HERE
-             */
+
+            byte[][] messageblocks = opc.splitMessageIntoBlocks(toByteArrayFromHex(ENCRYPTED_MESSAGE));
+            String printableresult = "";
+            System.out.println("Message cut into blocks :");
+            for (int i = 0; i < messageblocks.length; i++) {
+                System.out.println(toHexFromByteArray(messageblocks[i]));
+            }
+            String hexresult = "";
+            int padlen;
+
+            for (int i = 0; i < messageblocks.length - 1; i++) {
+
+                if (i == messageblocks.length - 2) {
+                    System.out.println("I : " + String.valueOf(i));
+                    padlen = opc.getPaddingLengthForLastBlock(opq, messageblocks[i], messageblocks[i + 1]);
+                } else {
+                    padlen = 0;
+                }
+                System.out.println("Length for padding : " + String.valueOf(padlen));
+                byte[] result = opc.runDecryptionForBlock(opq, messageblocks[i], messageblocks[i + 1], padlen);
+                String partialByteArrayResult = toPrintableString(result);
+                String partialHexArrayResult = toHexFromByteArray(result);
+
+                printableresult += partialByteArrayResult;
+                hexresult += partialHexArrayResult;
+
+                System.out.print("Bloc décodé :");
+                System.out.println(partialByteArrayResult);
+            }
+            System.out.println("Final Result :");
+            System.out.println(printableresult);
+            System.out.println(hexresult);
         } catch (Exception e) {
-            System.out.print("Exception caught. Server down ?");
             e.printStackTrace();
         }
     }
