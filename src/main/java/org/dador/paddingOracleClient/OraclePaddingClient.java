@@ -4,8 +4,9 @@ package org.dador.paddingOracleClient;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import static org.dador.paddingOracleClient.HexConverters.*;
+import static org.dador.paddingOracleClient.HexConverters.toByteArrayFromHex;
 import static org.dador.paddingOracleClient.HexConverters.toHexFromByteArray;
+import static org.dador.paddingOracleClient.HexConverters.toPrintableString;
 
 /**
  * Main Class for Padding OracleClient
