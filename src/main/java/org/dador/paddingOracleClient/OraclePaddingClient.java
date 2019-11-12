@@ -16,8 +16,9 @@ public class OraclePaddingClient {
     static final int BLOCK_SIZE = 16;
 
     /**
-     * Fonction takes a number and creates a block of x00 values, padded according to PKCS#7
-     * example : n=3 result is 00 00 .. 00 03 03 03
+     * Fonction prenant un nombre et qui cree un bloc contenant la valeur x00 ,
+     * avec un padding PKCS#7
+     * exemple : n=3 donne is 00 00 .. 00 03 03 03
      * @param n : number of bytes of padding
      * @return byte[BLOCK_SIZE] filled with 0 and padding values
      */
@@ -31,7 +32,8 @@ public class OraclePaddingClient {
     }
 
     /**
-     * Function that create a modified ciphertext bloc for trying a guess
+     * Fonction qui cree un bloc de cryptogramme modifie, pour essayer
+     * de deviner la valeur a cette position
      * Note that the "ciphertext" correspond to the IV part for the Block Cipher
      * @param ciphertext : original ciphertext bloc
      * @param decoded    : decrypted part of the plain text (for next bloc)
@@ -83,11 +85,9 @@ public class OraclePaddingClient {
 
         byte[][] result = new byte[blocNumber][BLOCK_SIZE];
 
-        for (int i = 0; i < blocNumber; i++) {
-            for (int j = 0; j < BLOCK_SIZE; j++) {
-                result[i][j] = message[i * BLOCK_SIZE + j];
-            }
-        }
+        /*
+        TODO : YOUR CODE HERE
+         */
         return result;
     }
 
