@@ -50,6 +50,24 @@ public class OraclePaddingClient {
     }
 
     /**
+     * Function that takes the 2 last blocks of the message
+     * and returns the length of the padding.
+     * @param poq : a PaddingOracleQuery object
+     * @param previousbloc : next to last block of the ciphertext
+     * @param lastbloc : last bloc of the ciphertext
+     * @return an integer corresponding to padding length
+     * @throws IOException
+     * @throws URISyntaxException
+     */
+    public int getPaddingLengthForLastBlock(PaddingOracleQuery poq, byte[] previousbloc, byte[] lastbloc) throws IOException, URISyntaxException {
+        /**
+         * TODO : Your Code HERE
+         */
+        // should not arrive here !
+        return 0;
+    }
+
+    /**
      * Fonction that splits a message into constituent blocs of BLOCK_SIZE
      *
      * @param message
@@ -74,25 +92,7 @@ public class OraclePaddingClient {
     }
 
     /**
-     * Function that takes the 2 last blocks of the message
-     * and returns the length of the padding.
-     * @param poq : a PaddingOracleQuery object
-     * @param previousbloc : next to last block of the ciphertext
-     * @param lastbloc : last bloc of the ciphertext
-     * @return an integer corresponding to padding length
-     * @throws IOException
-     * @throws URISyntaxException
-     */
-    public int getPaddingLengthForLastBlock(PaddingOracleQuery poq, byte[] previousbloc, byte[] lastbloc) throws IOException, URISyntaxException {
-        /**
-         * TODO : Your Code HERE
-         */
-        // should not arrive here !
-        return 0;
-    }
-
-    /**
-     * Main function that takes 2 consecutive blocks of the ciphertext
+     * Function that takes 2 consecutive blocks of the ciphertext
      * and returns the decryption of the 2nd message block
      *
      * @param poq : a PaddingOracleQuery object to query server
@@ -127,6 +127,11 @@ public class OraclePaddingClient {
         return decoded;
     }
 
+    // Routine principale : normalement pas de besoin de la modifier
+    // Découpe le message en bloc, et appelle runDecryptionForBlock
+    // pour chaque bloc.
+    // pour le dernier bloc, appel de getPaddingLengthForLastBlock pour
+    // trouver plus rapidement la longueur du padding
     public static void main(String[] args) {
         OraclePaddingClient opc = new OraclePaddingClient();
         PaddingOracleQuery opq = new PaddingOracleQuery();
@@ -150,8 +155,9 @@ public class OraclePaddingClient {
             for (int i = 0; i < messageblocks.length - 1; i++) {
 
                 if (i == messageblocks.length - 2) {
-                    System.out.println("I : " + String.valueOf(i));
+                    System.out.print("Decodage du dernier bloc : calcul du padding");
                     padlen = opc.getPaddingLengthForLastBlock(opq, messageblocks[i], messageblocks[i + 1]);
+                    System.out.println(padlen);
                 } else {
                     padlen = 0;
                 }
