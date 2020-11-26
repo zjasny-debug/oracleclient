@@ -1,5 +1,6 @@
 package org.dador.paddingOracleClient;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import static org.dador.paddingOracleClient.HexConverters.toByteArrayFromHex;
@@ -12,6 +13,19 @@ import static org.junit.Assert.assertEquals;
  * Created by dame on 18/10/2016.
  */
 public class OraclePaddingClientTest {
+    static final String ENCRYPTED_MESSAGE = "5ca00ff4c878d61e1edbf1700618fb287c21578c0580965dad57f70636ea402fa0017c4acc82717730565174e2e3f713d3921bab07cba15f3197b87976525ce4";
+
+    @Test
+    public void should_buildGuessForPositionLastBit_return_() throws Exception {
+        OraclePaddingClient opc = new OraclePaddingClient();
+        byte[] cypher = toByteArrayFromHex("02020202020202020202020202020202");
+        byte[] decoded = toByteArrayFromHex("00000000000000000000000000000000");
+        byte guess = 0x25;
+        int position = 15; // padding shoud be                   "00000000000000000000000000000001"
+        byte[] expected = toByteArrayFromHex("02020202020202020202020202020226");
+        assertArrayEquals(expected, opc.buildGuessForPosition(cypher, decoded, position, guess));
+    }
+
     @Test
     public void should_buildGuessForPosition_return_() throws Exception {
         OraclePaddingClient opc = new OraclePaddingClient();
@@ -69,4 +83,15 @@ public class OraclePaddingClientTest {
         assertArrayEquals(toByteArrayFromHex("0123456789ABCDEF0123456789ABCDEF"), result[0]);
     }
 
+    @Test
+    public void should_return_PaddingLength_ForLastBlock() throws Exception {
+        OraclePaddingClient opc = new OraclePaddingClient();
+        PaddingOracleQuery poq = new PaddingOracleQuery();
+
+        String message = ENCRYPTED_MESSAGE;
+        byte[] hexMessage = toByteArrayFromHex(message);
+        byte[][] splitMSG = opc.splitMessageIntoBlocks(hexMessage);
+        int result = opc.getPaddingLengthForLastBlock(poq, splitMSG[2], splitMSG[3]);
+        Assert.assertEquals(6, result);
+    }
 }

@@ -20,7 +20,6 @@ public class PaddingOracleQueryTest {
         Assert.assertEquals(true, response);
     }
 
-
     @Test
     public void should_return_false_for_invalid_query() throws Exception {
         PaddingOracleQuery opc = new PaddingOracleQuery();
@@ -35,17 +34,6 @@ public class PaddingOracleQueryTest {
         Assert.assertEquals(false, response);
     }
 
-    @Test
-    public void should_return_PaddingLength_ForLastBlock() throws Exception {
-        OraclePaddingClient opc = new OraclePaddingClient();
-        PaddingOracleQuery poq = new PaddingOracleQuery();
-
-        String message = ENCRYPTED_MESSAGE;
-        byte[] hexMessage = toByteArrayFromHex(message);
-        byte[][] splitMSG = opc.splitMessageIntoBlocks(hexMessage);
-        int result = opc.getPaddingLengthForLastBlock(poq, splitMSG[2], splitMSG[3]);
-        Assert.assertEquals(6, result);
-    }
 
     @Test(expected = IllegalArgumentException.class)
     public void should_return_exception_for_middle_block() throws Exception {
