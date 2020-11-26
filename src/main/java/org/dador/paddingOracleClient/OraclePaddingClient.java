@@ -103,28 +103,38 @@ public class OraclePaddingClient {
      * @throws IOException
      * @throws URISyntaxException
      */
-    public byte[] runDecryptionForBlock(PaddingOracleQuery poq, byte[] iv, byte[] ciphertext, int padding) throws IOException, URISyntaxException {
-        byte[] decoded = new byte[BLOCK_SIZE];
+    public byte[] decryptBlock(PaddingOracleQuery poq, byte[] iv, byte[] ciphertext, int padding) throws IOException, URISyntaxException {
+        byte[] decoded = new byte[BLOCK_SIZE]; // This contains the decoded part of the block
+        byte guess;
+
         if (padding > 0) {
             decoded = buildPaddingArray(padding);
         }
-        String query; // requête représenté en chaine hexadécimale
-        byte[] bquery; // requete sous forme byte array
+
         String hexBloc = toHexFromByteArray(ciphertext);
 
         for (int pos = BLOCK_SIZE - padding; pos > 0; pos--) {
-            for (int guess = 0; guess < 256; guess++) {
-                bquery = buildGuessForPosition(iv, decoded, pos - 1, (byte) guess);
-                query = toHexFromByteArray(bquery) + hexBloc;
-                if (poq.query(query)) {
-                    decoded[pos - 1] = (byte) guess;
-                    System.out.println(toPrintableString(decoded));
-                    break;
-                }
-            }
+            guess = getByteAtPosition(poq, iv, decoded, hexBloc, pos);
+            decoded[pos - 1] = (byte) guess;
 
         }
+
         return decoded;
+    }
+
+    private byte getByteAtPosition(PaddingOracleQuery poq, byte[] iv, byte[] decoded, String hexBloc, int pos) throws IOException, URISyntaxException {
+        String query; // requête représenté en chaine hexadécimale
+        byte[] bquery; // requete sous forme byte array
+
+        for (int guess = 0; guess < 256; guess++) {
+            bquery = buildGuessForPosition(iv, decoded, pos - 1, (byte) guess);
+            query = toHexFromByteArray(bquery) + hexBloc;
+            if (poq.query(query)) {
+                System.out.println(toPrintableString(decoded));
+                return (byte) guess;
+            }
+        }
+        return (byte) 0;
     }
 
     // Routine principale : normalement pas de besoin de la modifier
@@ -163,7 +173,7 @@ public class OraclePaddingClient {
                     padlen = 0;
                 }
                 System.out.println("Length for padding : " + String.valueOf(padlen));
-                byte[] result = opc.runDecryptionForBlock(opq, messageblocks[i], messageblocks[i + 1], padlen);
+                byte[] result = opc.decryptBlock(opq, messageblocks[i], messageblocks[i + 1], padlen);
                 String partialByteArrayResult = toPrintableString(result);
                 String partialHexArrayResult = toHexFromByteArray(result);
 
