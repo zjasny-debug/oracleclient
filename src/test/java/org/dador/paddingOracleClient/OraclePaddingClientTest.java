@@ -76,11 +76,13 @@ public class OraclePaddingClientTest {
     public void should_split_32ByteMsg_into_2_blocs() throws Exception {
         OraclePaddingClient opc = new OraclePaddingClient();
 
-        String message = "0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF";
+        String message = "0123456789ABCDEF0123456789ABCDEFFEDCBA9876543210FEDCBA9876543210";
         byte[] hexMessage = toByteArrayFromHex(message);
         byte[][] result = opc.splitMessageIntoBlocks(hexMessage);
         assertEquals(2, result.length);
         assertArrayEquals(toByteArrayFromHex("0123456789ABCDEF0123456789ABCDEF"), result[0]);
+        assertArrayEquals(toByteArrayFromHex("FEDCBA9876543210FEDCBA9876543210"), result[1]);
+
     }
 
     @Test
