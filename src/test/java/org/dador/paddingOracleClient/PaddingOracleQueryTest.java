@@ -35,15 +35,5 @@ public class PaddingOracleQueryTest {
     }
 
 
-    @Test(expected = IllegalArgumentException.class)
-    public void should_return_exception_for_middle_block() throws Exception {
-        OraclePaddingClient opc = new OraclePaddingClient();
-        PaddingOracleQuery poq = new PaddingOracleQuery();
 
-        String message = ENCRYPTED_MESSAGE;
-        byte[] hexMessage = toByteArrayFromHex(message);
-        byte[][] splitMSG = opc.splitMessageIntoBlocks(hexMessage);
-        int result = opc.getPaddingLengthForLastBlock(poq, splitMSG[1], splitMSG[2]);
-        Assert.assertEquals(6, result);
-    }
 }
