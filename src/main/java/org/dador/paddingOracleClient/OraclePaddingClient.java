@@ -1,5 +1,9 @@
 package org.dador.paddingOracleClient;
-
+/* BOUHABEL Nassim
+ * DJENOUNE Nabil
+ * TRANCOSO Sébastien
+ * TISSOUDALI Mohamed
+ */
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -24,9 +28,13 @@ public class OraclePaddingClient {
     protected byte[] buildPaddingArray(int n) {
         byte[] result = new byte[BLOCK_SIZE];
 
-        /**
-         * TODO : Your CODE HERE
-         */
+        int i;
+        for (i=0;i<n ;i++)
+        {
+            result[BLOCK_SIZE-1-i]=(byte)n;
+
+        }
+
         return result;
     }
 
@@ -44,9 +52,23 @@ public class OraclePaddingClient {
     protected byte[] buildGuessForPosition(byte[] iv, byte[] decoded, int position, byte guess) {
         byte[] result = new byte[BLOCK_SIZE];
 
-        /**
-         * TODO : YOUR CODE HERE
-         */
+        byte [] tab = new byte[BLOCK_SIZE];
+
+        byte b,c;
+        b = iv[15];
+        c = (byte) (b ^ guess);
+        tab[15] = (byte) (c);
+        int i;
+        for (i=0; i< BLOCK_SIZE-1 ; i++)
+        {
+            tab[i]=iv[i];
+        }
+
+
+        byte [] d = buildPaddingArray(1);
+        result = HexConverters.xorArray(tab,d);
+
+
 
         return result;
     }
@@ -86,9 +108,20 @@ public class OraclePaddingClient {
 
         byte[][] result = new byte[blocNumber][BLOCK_SIZE];
 
-        /*
-        TODO : YOUR CODE HERE
-         */
+        int j;
+        int i;
+        int n=0;
+        for (i=0; i< blocNumber ; i++)
+        {
+            for (j=0 ; j < BLOCK_SIZE ; j++)
+            {
+                result[i][j]= message[n];
+                n++;
+            }
+
+
+        }
+
         return result;
     }
 
