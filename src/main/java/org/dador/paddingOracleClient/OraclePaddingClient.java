@@ -7,6 +7,7 @@ import java.net.URISyntaxException;
 import static org.dador.paddingOracleClient.HexConverters.*;
 
 /**
+ *  Binôme : Akbili Hamza et Jasny Ziad
  * Main Class for Padding OracleClient
  */
 public class OraclePaddingClient {
